@@ -1,0 +1,7 @@
+controllers:
+    resource: ../../src/Controller/
+    type: annotation
+#/apirest_controller:
+#    resource: ../../src/Controller/Rest/
+#    type: annotation
+#    prefix: 
