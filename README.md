@@ -7,33 +7,33 @@ mysql 5.7
 
 After git clone command in console
 
-###composer.phar install
-####
+### composer.phar install
+#
 
-#####Set database access in file .env 
+##### Set database access in file .env 
 
 Update database struct
-#####php ./bin/console doctrine:schema:update --force
+##### php ./bin/console doctrine:schema:update --force
 
 #
 Command start internal server
 
-####php bin/console server:start
+#### php bin/console server:start
 ####
 load fixtures
 
-####php bin/console doctrine:fixtures:load
+#### php bin/console doctrine:fixtures:load
 ####
 
 create admin user
 
-####php bin/console fos:user:create adminuser --super-admin
+#### php bin/console fos:user:create adminuser --super-admin
 ####
 
 run phpunit
 ### Warining: phpunit erase current database
-####php bin/phpunit
+#### php bin/phpunit
 
 
 Admin link:
-####http://localhost:8000/admin/
+#### http://localhost:8000/admin/
