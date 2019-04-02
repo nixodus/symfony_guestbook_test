@@ -7,6 +7,7 @@ use App\Services\GuestbookPostRetriver;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\Container;
 
 class GuestbookPostRetriverServiceTest extends TestCase
 {
@@ -47,9 +48,10 @@ class GuestbookPostRetriverServiceTest extends TestCase
         $this->list[] = $record2;
 
         $entityManager = $this->mockEntityManager();
+        $container = $this->mockContainer();
 
         $this->guestbookPostRetriver = new GuestbookPostRetriver(
-            $entityManager
+            $entityManager, $container
         );
 
     }
@@ -66,6 +68,13 @@ class GuestbookPostRetriverServiceTest extends TestCase
         return $entityManager;
     }
 
+    public function mockContainer()
+    {
+        $Container = $this->getMockBuilder(Container::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        return $Container;
+    }
 
     public function testCreate_Post()
     {

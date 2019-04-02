@@ -4,7 +4,9 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints\Date;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GuestbookPostRepository")
@@ -46,9 +48,14 @@ class GuestbookPost
      */
     private $imageFile;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_added", type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $dateAdded;
 
-
-    // ...
 
 
 
@@ -120,5 +127,19 @@ class GuestbookPost
     {
         return $this->image;
     }
+
+    public function getDate(): ?\DateTime
+    {
+        return $this->dateAdded;
+    }
+
+    public function setDate(?string $dateAdded): self
+    {
+        $this->dateAdded = $dateAdded;
+
+        return $this;
+    }
+
+
 
 }

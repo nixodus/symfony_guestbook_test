@@ -6,6 +6,9 @@ use App\Services\GuestbookPostCreator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpKernel\Kernel;
+
 
 class GuestbookPostCreatorServiceTest extends TestCase
 {
@@ -23,9 +26,11 @@ class GuestbookPostCreatorServiceTest extends TestCase
     public function setUp()
     {
         $entityManager = $this->mockEntityManager();
+        $container = $this->mockContainer();
 
         $this->guestbookPostCreator = new GuestbookPostCreator(
-            $entityManager
+            $entityManager,
+            $container
         );
 
     }
@@ -40,6 +45,26 @@ class GuestbookPostCreatorServiceTest extends TestCase
     }
 
 
+    public function mockContainer()
+    {
+        $Container = $this->getMockBuilder(Container::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $Container->expects($this->any())
+            ->method('get')
+            ->willReturnCallback([$this, 'getKernelCallback']);
+        return $Container;
+    }
+
+    public function getKernelCallback()
+    {
+        $Kernel = $this->getMockBuilder(Kernel::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        return $Kernel;
+    }
+
+
     public function testCreate_Post()
     {
 
@@ -47,7 +72,7 @@ class GuestbookPostCreatorServiceTest extends TestCase
         $data['body'] = 'b';
         $data['enabled'] = false;
 
-        $result = $this->guestbookPostCreator->createPost($data, false, 'imagePath', 'dir');
+        $result = $this->guestbookPostCreator->createPost($data, false);
 
         $this->assertTrue($result);
     }

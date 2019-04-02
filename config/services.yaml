@@ -35,10 +35,18 @@ services:
 
     app.guestbook.post.retriver:
         class: App\Services\GuestbookPostRetriver
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments: ['@doctrine.orm.entity_manager', '@service_container']
 
     app.guestbook.post.creator:
         class: App\Services\GuestbookPostCreator
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments: ['@doctrine.orm.entity_manager', '@service_container']
 
+    gedmo.listener.timestampable:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            # I have 2 DBAL connections using Timestampable
+            - { name: doctrine.event_subscriber, connection: default }
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ '@annotation_reader' ] ]
 

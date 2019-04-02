@@ -9,6 +9,7 @@
         "friendsofsymfony/oauth-server-bundle": "^1.6",
         "friendsofsymfony/rest-bundle": "^2.5",
         "friendsofsymfony/user-bundle": "~2.0",
+        "gedmo/doctrine-extensions": "^2.4",
         "guzzlehttp/guzzle": "^6.3",
         "jms/serializer-bundle": "^2.4",
         "nelmio/cors-bundle": "^1.5",

@@ -35,10 +35,7 @@ class GuestbookPostController extends FOSRestController
      */
     public function getGuestbookPostsAction(Request $request)
     {
-
-
-        $posts = $this->postRetriver->getPostList($this->container->getParameter('app.path.guestbookpost_images'));
-
+        $posts = $this->postRetriver->getPostList();
         return $this->handleView($this->view($posts));
     }
 
@@ -57,10 +54,7 @@ class GuestbookPostController extends FOSRestController
 
 
         try {
-            $this->postCreator->createPost($data,
-                $fileimage, $this->container->getParameter('app.path.guestbookpost_images'),
-                $this->get('kernel')->getProjectDir()
-            );
+            $this->postCreator->createPost($data, $fileimage);
 
         } catch (\Exception $e) {
             return $this->handleView($this->view(['error' => 'error post created:' . $e->getMessage()], Response::HTTP_BAD_REQUEST));

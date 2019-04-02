@@ -4,11 +4,17 @@ namespace App\Services;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use App\Entity\GuestbookPost;
 
 
 class GuestbookPostRetriver
 {
+
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
 
     /**
@@ -16,9 +22,12 @@ class GuestbookPostRetriver
      */
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+
+
+    public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container)
     {
         $this->entityManager = $entityManager;
+        $this->container = $container;
     }
 
     /**
@@ -27,9 +36,9 @@ class GuestbookPostRetriver
      * @return array
      * @throws \RuntimeException
      */
-    public function getPostList($pathGuestbookpostImages) {
+    public function getPostList() {
 
-
+        $pathGuestbookpostImages = $this->container->getParameter('app.path.guestbookpost_images');
         $repository = $this->entityManager->getRepository(GuestbookPost::class);
         /** @var GuestbookPost[] $posts */
 

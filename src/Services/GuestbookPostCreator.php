@@ -4,7 +4,10 @@ namespace App\Services;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use App\Entity\GuestbookPost;
+use App\Entity\User;
+use FOS\UserBundle\Model\UserManager;
 
 class GuestbookPostCreator
 {
@@ -15,9 +18,15 @@ class GuestbookPostCreator
      */
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container)
     {
         $this->entityManager = $entityManager;
+        $this->container = $container;
     }
 
     /**
@@ -26,7 +35,7 @@ class GuestbookPostCreator
      * @return boolean
      * @throws \RuntimeException
      */
-    public function createPost($data, $fileimage, $pathGuestbookpostImages, $projectDir) {
+    public function createPost($data, $fileimage) {
 
         $post = new GuestbookPost();
 
@@ -38,9 +47,14 @@ class GuestbookPostCreator
             throw new \RuntimeException('Body is requred.');
         }
 
+
         $post->setEnabled($data['enabled']);
         $post->setTitle($data['title']);
         $post->setBody($data['body']);
+
+        $pathGuestbookpostImages = $this->container->getParameter('app.path.guestbookpost_images');
+        $projectDir = $this->container->get('kernel')->getProjectDir();
+
 
 
         try{
